@@ -1,5 +1,7 @@
 { config, pkgs, ... }:
 {
+  # build file system first and foremost
+  imports = [ ./disko.nix ];
 
   # personal preference cause i'm lazy
   nixpkgs.config = {
