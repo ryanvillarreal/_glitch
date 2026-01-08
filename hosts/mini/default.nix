@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  inputs,
+  config,
+  pkgs,
+  ...
+}:
 {
   # build file system first and foremost
   imports = [ ../base/default.nix ];
@@ -7,9 +12,8 @@
   networking = {
     hostName = "mini";
     networkmanager.enable = true;
-    # how do I fix this for vms? or dynamic?
-    hostId = "0fadedaf"; # required for zfs should make this more dynamic or auto-ge
-
+    # Generate hostId automatically based on hostname
+    hostId = builtins.substring 0 8 (builtins.hashString "sha256" "mini");
     firewall = {
       enable = true;
       allowedTCPPorts = [ 22 ]; # always allow ssh
@@ -39,4 +43,36 @@
     ];
   };
 
+  users.users.xj = {
+    isNormalUser = true;
+    initialPassword = "xj"; # force change on first login
+    home = "/home/xj";
+    description = "xj";
+    extraGroups = [
+      "wheel"
+      "null"
+      "xj"
+    ];
+
+    shell = pkgs.bash;
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMYRBxAcBhbKHwXrOrvDDP8NfIZb6HvF9VNjk0gHC4PR null@xjcrazy09.com"
+    ];
+  };
+
+  # --- The Home Manager Handoff (Top Level) ---
+  home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    # Pass inputs down so xj's flake can see its own dependencies
+    extraSpecialArgs = { inherit inputs; };
+
+    users.xj = {
+      imports = [ inputs.xj.homeManagerModules.default ];
+
+      # Since xj's repo might be generic, force the directory here
+      home.username = "xj";
+      home.homeDirectory = "/home/xj";
+    };
+  };
 }

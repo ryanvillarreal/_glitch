@@ -3,6 +3,7 @@
     disk = {
       main = {
         # this is gonna potentially change
+        # also kinda dangerous lmao
         device = "/dev/sda";
         type = "disk";
         content = {

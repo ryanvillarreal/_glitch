@@ -15,6 +15,10 @@
       url = "github:nix-community/nixos-generators";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    xj = {
+      url = "github:ryanvillarreal/xj";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -50,6 +54,9 @@
       packages.${system} = {
         thonk = self.nixosConfigurations.thonk.config.system.build.toplevel;
         mini = self.nixosConfigurations.mini.config.system.build.toplevel;
+
+        # This makes 'nix run .#mini-vm' work
+        mini-vm = self.nixosConfigurations.mini.config.system.build.vm;
       };
     };
 }

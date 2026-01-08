@@ -1,5 +1,17 @@
+# base/default.nix is our template that will be universal across all builds
+# supposed to cut down on overall lines of code
 { config, pkgs, ... }:
 {
+  # This fixes the "experimental feature" error
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
+
+  # This fixes the <nixpkgs> error by linking the system's nixpkgs
+  # to the legacy channels path
+  nix.nixPath = [ "nixpkgs=${pkgs.path}" ];
+
   # build file system first and foremost
   imports = [ ../common/disko.nix ];
 
