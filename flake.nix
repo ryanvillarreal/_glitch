@@ -2,27 +2,19 @@
   description = "v.01";
 
   inputs = {
-    # Core NixOS packages
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-
-    # User environment management
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    # Disk partitioning as code
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    # Tool to generate various formats (like ISOs)
     nixos-generators = {
       url = "github:nix-community/nixos-generators";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
   };
 
   outputs =
@@ -34,30 +26,30 @@
       nixos-generators,
       ...
     }@inputs:
-
     let
       system = "x86_64-linux";
       specialArgs = { inherit inputs; };
+
+      # Define shared modules to avoid repetition
+      sharedModules = [
+        home-manager.nixosModules.home-manager
+        disko.nixosModules.disko
+      ];
     in
     {
-      # Usage: nixos-rebuild build-vm --flake .#thonk
       nixosConfigurations.thonk = nixpkgs.lib.nixosSystem {
         inherit system specialArgs;
-        modules = [
-          ./hosts/thonk/default.nix
-          home-manager.nixosModules.home-manager
-          disko.nixosModules.disko
-        ];
+        modules = [ ./hosts/thonk/default.nix ] ++ sharedModules;
       };
 
       nixosConfigurations.mini = nixpkgs.lib.nixosSystem {
         inherit system specialArgs;
-        modules = [
-          ./hosts/mini/default.nix
-          home-manager.nixosModules.home-manager
-          disko.nixosModules.disko
-        ];
+        modules = [ ./hosts/mini/default.nix ] ++ sharedModules;
       };
 
+      packages.${system} = {
+        thonk = self.nixosConfigurations.thonk.config.system.build.toplevel;
+        mini = self.nixosConfigurations.mini.config.system.build.toplevel;
+      };
     };
 }

@@ -1,28 +1,10 @@
 { config, pkgs, ... }:
 {
   # build file system first and foremost
-  imports = [ ../common/disko.nix ];
-
-  # personal preference cause i'm lazy
-  nixpkgs.config = {
-    allowUnfree = true;
-    allowBroken = true;
-  };
-
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  boot.extraModulePackages = with config.boot.kernelPackages; [ rtl8812au ];
-
-  # security configs
-  security.rtkit.enable = true;
-  security.sudo-rs.enable = true;
-  system.autoUpgrade.enable = true;
-
-  # new fs who dis?
-  boot.supportedFilesystems = [ "zfs" ];
-  boot.initrd.supportedFilesystems = [ "zfs" ];
+  imports = [
+    ../common/disko.nix
+    ../base/default.nix
+  ];
 
   # network
   networking = {
@@ -40,9 +22,7 @@
   # Set your time zone.
   time.timeZone = "America/New_York";
 
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-
+  # thonk is a physical device so we add additional features for that device
   services.pipewire = {
     enable = true;
     pulse.enable = true;

@@ -5,7 +5,7 @@
 
   # network should be uniq for each machine
   networking = {
-    hostName = "thonkpad";
+    hostName = "mini";
     networkmanager.enable = true;
     # how do I fix this for vms? or dynamic?
     hostId = "0fadedaf"; # required for zfs should make this more dynamic or auto-ge
