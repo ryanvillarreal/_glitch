@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 {
   # build file system first and foremost
-  imports = [ ./disko.nix ];
+  imports = [ ../common/disko.nix ];
 
   # personal preference cause i'm lazy
   nixpkgs.config = {
@@ -12,6 +12,7 @@
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+
   boot.extraModulePackages = with config.boot.kernelPackages; [ rtl8812au ];
 
   # security configs
@@ -28,7 +29,7 @@
     hostName = "thonkpad";
     networkmanager.enable = true;
     # how do I fix this for vms? or dynamic?
-    hostId = "de7b4c3a"; # required for zfs
+    hostId = "0fadedaf"; # required for zfs should make this more dynamic
 
     firewall = {
       enable = true;

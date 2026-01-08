@@ -49,5 +49,16 @@
           disko.nixosModules.disko
         ];
       };
+
+      # Usage: nixos-rebuild build-vm --flake .#thonk
+      nixosConfigurations.mini = nixpkgs.lib.nixosSystem {
+        inherit system specialArgs;
+        modules = [
+          ./hosts/mini/default.nix
+          home-manager.nixosModules.home-manager
+          disko.nixosModules.disko
+        ];
+      };
+
     };
 }
