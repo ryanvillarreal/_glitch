@@ -1,10 +1,7 @@
 { config, pkgs, ... }:
 {
   # build file system first and foremost
-  imports = [
-    ../common/disko.nix
-    ../base/default.nix
-  ];
+  imports = [ ../base/default.nix ];
 
   # network should be uniq for each machine
   networking = {

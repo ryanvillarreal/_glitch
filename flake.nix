@@ -50,7 +50,6 @@
         ];
       };
 
-      # Usage: nixos-rebuild build-vm --flake .#thonk
       nixosConfigurations.mini = nixpkgs.lib.nixosSystem {
         inherit system specialArgs;
         modules = [
