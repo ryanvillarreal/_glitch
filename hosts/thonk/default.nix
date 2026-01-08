@@ -28,16 +28,10 @@
     # how do I fix this for vms? or dynamic?
     hostId = "de7b4c3a"; # required for zfs
 
-    hosts = {
-      "192.168.40.10" = [ "gitea.xjcrazy09.com" ];
-    };
-
     firewall = {
       enable = true;
       allowedTCPPorts = [ 22 ];
     };
-
-    nameservers = [ "192.168.40.10" ];
   };
 
   # Set your time zone.
