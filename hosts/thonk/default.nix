@@ -2,6 +2,7 @@
 {
   # build file system first and foremost
   imports = [
+    ./hardware-configuration.nix
     ../common/disko.nix
     ../base/default.nix
   ];
