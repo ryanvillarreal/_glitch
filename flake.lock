@@ -40,6 +40,27 @@
         "type": "github"
       }
     },
+    "home-manager_2": {
+      "inputs": {
+        "nixpkgs": [
+          "xj",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1767909183,
+        "narHash": "sha256-u/bcU0xePi5bgNoRsiqSIwaGBwDilKKFTz3g0hqOBAo=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "cd6e96d56ed4b2a779ac73a1227e0bb1519b3509",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "type": "github"
+      }
+    },
     "nixlib": {
       "locked": {
         "lastModified": 1736643958,
@@ -102,12 +123,18 @@
       }
     },
     "xj": {
+      "inputs": {
+        "home-manager": "home-manager_2",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
       "locked": {
-        "lastModified": 1767907573,
-        "narHash": "sha256-ILi5dl5SZaa6R3exzWBkzlejtnRBpdotipqlgjRthpc=",
+        "lastModified": 1767915291,
+        "narHash": "sha256-fnlzb39CIFqBCq7V1JgHrXNhMV5WOLyUgNI4waXD/R4=",
         "owner": "ryanvillarreal",
         "repo": "xj",
-        "rev": "97c80bc34ed7ab89b949f3b0c3c2faf0d183499b",
+        "rev": "0e149c4efc1ef2123b4e930379db0fab46221479",
         "type": "github"
       },
       "original": {

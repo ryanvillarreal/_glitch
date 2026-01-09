@@ -69,10 +69,6 @@
 
     users.xj = {
       imports = [ inputs.xj.homeManagerModules.default ];
-
-      # Since xj's repo might be generic, force the directory here
-      home.username = "xj";
-      home.homeDirectory = "/home/xj";
     };
   };
 }
