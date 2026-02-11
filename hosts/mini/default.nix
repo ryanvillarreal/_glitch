@@ -6,7 +6,9 @@
 }:
 {
   # build file system first and foremost
-  imports = [ ../base/default.nix ];
+  imports = [ 
+    ../base/default.nix
+  ];
 
   # network should be uniq for each machine
   networking = {

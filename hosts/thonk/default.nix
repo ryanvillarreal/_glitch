@@ -11,6 +11,7 @@
   networking = {
     hostName = "thonkpad";
     networkmanager.enable = true;
+    
     # how do I fix this for vms? or dynamic?
     hostId = "0fadedaf"; # required for zfs should make this more dynamic
 

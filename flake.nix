@@ -2,6 +2,7 @@
   description = "v.01";
 
   inputs = {
+
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -11,10 +12,12 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     nixos-generators = {
       url = "github:nix-community/nixos-generators";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     xj = {
       url = "github:ryanvillarreal/xj";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -31,7 +34,6 @@
       ...
     }@inputs:
     let
-      system = "x86_64-linux";
       specialArgs = { inherit inputs; };
 
       # Define shared modules to avoid repetition
@@ -41,22 +43,30 @@
       ];
     in
     {
+      # Physical machine configurations
       nixosConfigurations.thonk = nixpkgs.lib.nixosSystem {
-        inherit system specialArgs;
+        system = "x86_64-linux";
+        inherit specialArgs;
         modules = [ ./hosts/thonk/default.nix ] ++ sharedModules;
       };
 
       nixosConfigurations.mini = nixpkgs.lib.nixosSystem {
-        inherit system specialArgs;
+        system = "aarch64-linux";
+        inherit specialArgs;
         modules = [ ./hosts/mini/default.nix ] ++ sharedModules;
       };
 
-      packages.${system} = {
-        thonk = self.nixosConfigurations.thonk.config.system.build.toplevel;
-        mini = self.nixosConfigurations.mini.config.system.build.toplevel;
+      # VM configurations with blank disk formatting
+      nixosConfigurations.mini-vm-x86 = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        inherit specialArgs;
+        modules = [ ./hosts/mini/vm.nix ] ++ sharedModules;
+      };
 
-        # This makes 'nix run .#mini-vm' work
-        mini-vm = self.nixosConfigurations.mini.config.system.build.vm;
+      nixosConfigurations.mini-vm-arm = nixpkgs.lib.nixosSystem {
+        system = "aarch64-linux";
+        inherit specialArgs;
+        modules = [ ./hosts/mini/vm.nix ] ++ sharedModules;
       };
     };
 }
