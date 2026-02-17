@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# 1. Configuration
+FLAKE_URL="github:ryanvillarreal/_glitch#mini"
+TARGET_DISK="/dev/sda" # we should take in custom args in the future
+
+echo "--- Initializing Unassisted Pipeline for: $FLAKE_URL ---"
+
+# 2. Enable Flakes/Nix-Command for the ephemeral shell
+export NIX_CONFIG="extra-experimental-features = nix-command flakes"
+
+# 3. Execute Disko Partitioning & Mounting
+# Using zap_create_mount to ensure a clean slate
+echo "--- Step 1: Partitioning and Mounting with Disko ---"
+nix run github:nix-community/disko/latest -- \
+  --mode zap_create_mount \
+  --flake "$FLAKE_URL" \
+  --disk main "$TARGET_DISK"
+
+# 4. Execute NixOS Install
+echo "--- Step 2: Running nixos-install ---"
+sudo nixos-install --flake "$FLAKE_URL" --no-root-passwd
+
+echo "--- Installation Complete. Rebooting in 5 seconds... ---"
+sleep 5
+sudo reboot
